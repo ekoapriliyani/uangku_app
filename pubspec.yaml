@@ -36,10 +36,16 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
   calendar_appbar: ^0.0.6
+  intl: ^0.17.0
+  drift: ^2.26.1
+  drift_flutter: ^0.2.4
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  drift_dev: ^2.26.1
+  build_runner: ^2.4.15
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
