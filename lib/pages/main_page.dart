@@ -1,5 +1,6 @@
 import 'package:calendar_appbar/calendar_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:uangku_app/pages/categoty_page.dart';
 import 'package:uangku_app/pages/home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final List<Widget> _children = [HomePage(), CategoryPage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
