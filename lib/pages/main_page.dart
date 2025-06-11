@@ -1,7 +1,7 @@
 import 'package:calendar_appbar/calendar_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uangku_app/pages/categoty_page.dart';
+import 'package:uangku_app/pages/category_page.dart';
 import 'package:uangku_app/pages/home_page.dart';
 import 'package:uangku_app/pages/transaction_page.dart';
 
