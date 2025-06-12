@@ -12,6 +12,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   bool isExpense = true;
   final AppDatabase database = AppDatabase();
+  TextEditingController categoryNameController = TextEditingController();
 
   Future insert(String name, int type) async {
     DateTime now = DateTime.now();
@@ -25,7 +26,7 @@ class _CategoryPageState extends State<CategoryPage> {
             updatedAt: now,
           ),
         );
-    print(row);
+    print('MASUK : ' + row.toString());
   }
 
   void openDialog() {
