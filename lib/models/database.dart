@@ -23,6 +23,13 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
+  // query tabel category
+  Future<List<Category>> getAllCategoryRepo(int type) async {
+    return await (select(categories)
+      ..where((tbl) => tbl.type.equals(type))).get();
+  }
+  // akhir query tabel category
+
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'my_database',

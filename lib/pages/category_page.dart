@@ -11,6 +11,7 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
   bool isExpense = true;
+  int type = 2;
   final AppDatabase database = AppDatabase();
   TextEditingController categoryNameController = TextEditingController();
 
@@ -27,6 +28,10 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
         );
     print('MASUK : ' + row.toString());
+  }
+
+  Future<List<Category>> getAllCategory(int type) async {
+    return await database.getAllCategoryRepo(type);
   }
 
   void openDialog() {
@@ -47,6 +52,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
+                    controller: categoryNameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: "Name",
@@ -55,7 +61,9 @@ class _CategoryPageState extends State<CategoryPage> {
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      insert("Makan makan", 2);
+                      insert(categoryNameController.text, isExpense ? 2 : 1);
+                      Navigator.of(context, rootNavigator: true).pop('dialog');
+                      setState(() {});
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -87,6 +95,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   onChanged: (bool value) {
                     setState(() {
                       isExpense = value;
+                      type = value ? 2 : 1;
                     });
                   },
                   inactiveTrackColor: Colors.green[200],
@@ -102,47 +111,25 @@ class _CategoryPageState extends State<CategoryPage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Card(
-              elevation: 10,
-              child: ListTile(
-                leading:
-                    (isExpense)
-                        ? Icon(Icons.upload, color: Colors.red)
-                        : Icon(Icons.download, color: Colors.green),
-                title: Text("Sedekah"),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
-                    SizedBox(width: 10),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Card(
-              elevation: 10,
-              child: ListTile(
-                leading:
-                    (isExpense)
-                        ? Icon(Icons.upload, color: Colors.red)
-                        : Icon(Icons.download, color: Colors.green),
-                title: Text("Sedekah"),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
-                    SizedBox(width: 10),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-                  ],
-                ),
-              ),
-            ),
+          FutureBuilder<List<Category>>(
+            future: getAllCategory(type),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.length > 0) {
+                    return Text(
+                      "Ada data : " + snapshot.data!.length.toString(),
+                    );
+                  } else {
+                    return Center(child: Text("No has data"));
+                  }
+                } else {
+                  return Center(child: Text("No has data"));
+                }
+              }
+            },
           ),
         ],
       ),
