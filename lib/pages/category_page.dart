@@ -34,7 +34,14 @@ class _CategoryPageState extends State<CategoryPage> {
     return await database.getAllCategoryRepo(type);
   }
 
-  void openDialog() {
+  Future update(int categoryId, String newName) async {
+    return await database.updateCategoryRepo(categoryId, newName);
+  }
+
+  void openDialog(Category? category) {
+    if (category != null) {
+      categoryNameController.text = category.name;
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -61,9 +68,15 @@ class _CategoryPageState extends State<CategoryPage> {
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      insert(categoryNameController.text, isExpense ? 2 : 1);
+                      if (category == null) {
+                        insert(categoryNameController.text, isExpense ? 2 : 1);
+                      } else {
+                        update(category.id, categoryNameController.text);
+                      }
+
                       Navigator.of(context, rootNavigator: true).pop('dialog');
                       setState(() {});
+                      categoryNameController.clear();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -104,32 +117,84 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    openDialog();
+                    openDialog(null);
                   },
                   icon: Icon(Icons.add),
                 ),
               ],
             ),
           ),
-          FutureBuilder<List<Category>>(
-            future: getAllCategory(type),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.length > 0) {
-                    return Text(
-                      "Ada data : " + snapshot.data!.length.toString(),
-                    );
+          Expanded(
+            child: FutureBuilder<List<Category>>(
+              future: getAllCategory(type),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.length > 0) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Card(
+                              elevation: 10,
+                              child: ListTile(
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {
+                                        database.deleteCategoryRepo(
+                                          snapshot.data![index].id,
+                                        );
+                                        setState(() {});
+                                      },
+                                    ),
+                                    SizedBox(width: 10),
+                                    IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () {
+                                        openDialog(snapshot.data![index]);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                leading: Container(
+                                  padding: EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child:
+                                      (isExpense)
+                                          ? Icon(
+                                            Icons.upload,
+                                            color: Colors.redAccent[400],
+                                          )
+                                          : Icon(
+                                            Icons.download,
+                                            color: Colors.greenAccent[400],
+                                          ),
+                                ),
+                                title: Text(snapshot.data![index].name),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(child: Text("No has data"));
+                    }
                   } else {
                     return Center(child: Text("No has data"));
                   }
-                } else {
-                  return Center(child: Text("No has data"));
                 }
-              }
-            },
+              },
+            ),
           ),
         ],
       ),

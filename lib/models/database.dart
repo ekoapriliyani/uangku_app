@@ -23,12 +23,21 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  // query tabel category
+  // CRUD Category
   Future<List<Category>> getAllCategoryRepo(int type) async {
     return await (select(categories)
       ..where((tbl) => tbl.type.equals(type))).get();
   }
-  // akhir query tabel category
+
+  Future updateCategoryRepo(int id, String name) async {
+    return (update(categories)..where(
+      (tbl) => tbl.id.equals(id),
+    )).write(CategoriesCompanion(name: Value(name)));
+  }
+
+  Future deleteCategoryRepo(int id) async {
+    return (delete(categories)..where((tbl) => tbl.id.equals(id))).go();
+  }
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
