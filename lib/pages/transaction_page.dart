@@ -13,7 +13,9 @@ class _TransactionPageState extends State<TransactionPage> {
   bool isExpense = true;
   List<String> list = ['Makanan', 'Transportasi', 'Hiburan'];
   late String dropDownValue = list.first;
+  TextEditingController ammountController = TextEditingController();
   TextEditingController dateController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +48,7 @@ class _TransactionPageState extends State<TransactionPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
+                  controller: ammountController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     border: UnderlineInputBorder(),
@@ -80,7 +83,7 @@ class _TransactionPageState extends State<TransactionPage> {
               SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextField(
+                child: TextFormField(
                   readOnly: true,
                   controller: dateController,
                   decoration: InputDecoration(labelText: "Enter Date"),
@@ -100,10 +103,25 @@ class _TransactionPageState extends State<TransactionPage> {
                   },
                 ),
               ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextFormField(
+                  controller: detailController,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: "Detail",
+                  ),
+                ),
+              ),
               SizedBox(height: 25),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print('ammount : ' + ammountController.text);
+                    print('date : ' + dateController.text);
+                    print('detail : ' + detailController.text);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
