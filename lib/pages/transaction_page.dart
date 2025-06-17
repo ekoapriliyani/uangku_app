@@ -192,6 +192,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       detailController.text,
                       selectedCategory!.id,
                     );
+                    Navigator.pop(context, true);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final DateTime selectedDate;
+  const HomePage({Key? key, required this.selectedDate}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
