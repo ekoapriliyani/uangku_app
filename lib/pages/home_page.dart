@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uangku_app/models/database.dart';
+import 'package:uangku_app/models/transaction_with_category.dart';
 
 class HomePage extends StatefulWidget {
   final DateTime selectedDate;
@@ -10,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final AppDatabase database = AppDatabase();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -109,6 +112,53 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+            StreamBuilder<List<TransactionWithCategory>>(
+              stream: database.getTransactionByDateRepo(widget.selectedDate),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.length > 0) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Card(
+                              elevation: 10,
+                              child: ListTile(
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.delete),
+                                    SizedBox(width: 10),
+                                    Icon(Icons.edit),
+                                  ],
+                                ),
+                                title: Text("Rp. 20.000"),
+                                subtitle: Text("Makan Siang"),
+                                leading: Container(
+                                  child: Icon(Icons.upload, color: Colors.red),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(child: Text('Data transaksi masih kosong'));
+                    }
+                  } else {
+                    return Center(child: Text('Tidak ada data'));
+                  }
+                }
+              },
             ),
 
             // list transaksi

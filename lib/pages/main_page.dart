@@ -15,7 +15,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late DateTime selectedDate;
-  late final List<Widget> _children;
+  List<Widget> _children = []; // ada perubahan, sebelumnya memakai late
   late int currentIndex = 0;
 
   @override
@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> {
                 locale: 'id',
                 onDateChanged: (value) {
                   setState(() {
-                    print('SELECTED DATE' + value);
+                    print('SELECTED DATE' + value.toString());
                     selectedDate = value;
                     updateView(0, selectedDate);
                   });
