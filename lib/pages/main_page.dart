@@ -47,6 +47,7 @@ class _MainPageState extends State<MainPage> {
                 locale: 'id',
                 onDateChanged: (value) {
                   setState(() {
+                    print('SELECTED DATE' + value);
                     selectedDate = value;
                     updateView(0, selectedDate);
                   });
