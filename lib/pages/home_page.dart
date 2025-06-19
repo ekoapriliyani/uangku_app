@@ -122,6 +122,7 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.hasData) {
                     if (snapshot.data!.length > 0) {
                       return ListView.builder(
+                        shrinkWrap: true,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return Padding(
@@ -137,8 +138,17 @@ class _HomePageState extends State<HomePage> {
                                     Icon(Icons.edit),
                                   ],
                                 ),
-                                title: Text("Rp. 20.000"),
-                                subtitle: Text("Makan Siang"),
+                                title: Text(
+                                  "Rp. " +
+                                      snapshot.data![index].transaction.ammount
+                                          .toString(),
+                                ),
+                                subtitle: Text(
+                                  snapshot.data![index].category.name +
+                                      "(" +
+                                      snapshot.data![index].transaction.name +
+                                      ")",
+                                ),
                                 leading: Container(
                                   child: Icon(Icons.upload, color: Colors.red),
                                   decoration: BoxDecoration(
@@ -159,58 +169,6 @@ class _HomePageState extends State<HomePage> {
                   }
                 }
               },
-            ),
-
-            // list transaksi
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Card(
-                elevation: 10,
-                child: ListTile(
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.delete),
-                      SizedBox(width: 10),
-                      Icon(Icons.edit),
-                    ],
-                  ),
-                  title: Text("Rp. 20.000"),
-                  subtitle: Text("Makan Siang"),
-                  leading: Container(
-                    child: Icon(Icons.upload, color: Colors.red),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Card(
-                elevation: 10,
-                child: ListTile(
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.delete),
-                      SizedBox(width: 10),
-                      Icon(Icons.edit),
-                    ],
-                  ),
-                  title: Text("Rp. 7.000.000"),
-                  subtitle: Text("Gaji Bulanan"),
-                  leading: Container(
-                    child: Icon(Icons.download, color: Colors.green),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),
