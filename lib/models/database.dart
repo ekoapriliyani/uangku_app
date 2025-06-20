@@ -74,6 +74,10 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
+  Future deleteTransactionRepo(int id) async {
+    return (delete(transactions)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'my_database',

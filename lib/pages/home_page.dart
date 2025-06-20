@@ -134,7 +134,15 @@ class _HomePageState extends State<HomePage> {
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.delete),
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () async {
+                                        await database.deleteTransactionRepo(
+                                          snapshot.data![index].transaction.id,
+                                        );
+                                        setState(() {});
+                                      },
+                                    ),
                                     SizedBox(width: 10),
                                     IconButton(
                                       icon: Icon(Icons.edit),
