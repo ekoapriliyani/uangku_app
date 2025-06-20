@@ -57,6 +57,23 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
+  Future updateTransactionRepo(
+    int id,
+    int ammount,
+    int categoryId,
+    DateTime transactionDate,
+    String nameDetail,
+  ) async {
+    return (update(transactions)..where((tbl) => tbl.id.equals(id))).write(
+      TransactionsCompanion(
+        name: Value(nameDetail),
+        ammount: Value(ammount),
+        category_id: Value(categoryId),
+        transaction_date: Value(transactionDate),
+      ),
+    );
+  }
+
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'my_database',

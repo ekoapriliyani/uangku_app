@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uangku_app/models/database.dart';
 import 'package:uangku_app/models/transaction_with_category.dart';
+import 'package:uangku_app/pages/transaction_page.dart';
 
 class HomePage extends StatefulWidget {
   final DateTime selectedDate;
@@ -135,7 +136,20 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Icon(Icons.delete),
                                     SizedBox(width: 10),
-                                    Icon(Icons.edit),
+                                    IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => TransactionPage(
+                                                  transactionWithCategory:
+                                                      snapshot.data![index],
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ],
                                 ),
                                 title: Text(
@@ -150,7 +164,16 @@ class _HomePageState extends State<HomePage> {
                                       ")",
                                 ),
                                 leading: Container(
-                                  child: Icon(Icons.upload, color: Colors.red),
+                                  child:
+                                      (snapshot.data![index].category.type == 2)
+                                          ? Icon(
+                                            Icons.upload,
+                                            color: Colors.red,
+                                          )
+                                          : Icon(
+                                            Icons.download,
+                                            color: Colors.green,
+                                          ),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(8),

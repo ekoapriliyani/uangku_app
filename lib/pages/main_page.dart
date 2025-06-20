@@ -76,7 +76,11 @@ class _MainPageState extends State<MainPage> {
           onPressed: () {
             Navigator.of(context)
                 .push(
-                  MaterialPageRoute(builder: (context) => TransactionPage()),
+                  MaterialPageRoute(
+                    builder:
+                        (context) =>
+                            TransactionPage(transactionWithCategory: null),
+                  ),
                 )
                 .then((value) {
                   setState(() {});
