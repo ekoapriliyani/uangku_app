@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:uangku_app/pages/category_page.dart';
 import 'package:uangku_app/pages/home_page.dart';
+import 'package:uangku_app/pages/sholat_page.dart';
 import 'package:uangku_app/pages/transaction_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -15,12 +16,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late DateTime selectedDate;
-  List<Widget> _children = []; // ada perubahan, sebelumnya memakai late
+  List<Widget> _children = [];
   late int currentIndex = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     updateView(0, DateTime.now());
     super.initState();
   }
@@ -47,7 +47,6 @@ class _MainPageState extends State<MainPage> {
                 locale: 'id',
                 onDateChanged: (value) {
                   setState(() {
-                    print('SELECTED DATE' + value.toString());
                     selectedDate = value;
                     updateView(0, selectedDate);
                   });
@@ -56,42 +55,19 @@ class _MainPageState extends State<MainPage> {
                 lastDate: DateTime.now(),
               )
               : PreferredSize(
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 36,
-                      horizontal: 16,
-                    ),
-                    child: Text(
-                      "Categories",
-                      style: GoogleFonts.montserrat(fontSize: 20),
-                    ),
+                preferredSize: Size.fromHeight(100),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 36,
+                    horizontal: 16,
+                  ),
+                  child: Text(
+                    "Categories",
+                    style: GoogleFonts.montserrat(fontSize: 20),
                   ),
                 ),
-                preferredSize: Size.fromHeight(100),
               ),
-      floatingActionButton: Visibility(
-        visible: (currentIndex == 0) ? true : false,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(
-                  MaterialPageRoute(
-                    builder:
-                        (context) =>
-                            TransactionPage(transactionWithCategory: null),
-                  ),
-                )
-                .then((value) {
-                  setState(() {});
-                });
-          },
-          backgroundColor: Colors.green,
-          child: Icon(Icons.add),
-        ),
-      ),
       body: _children[currentIndex],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -102,12 +78,35 @@ class _MainPageState extends State<MainPage> {
               },
               icon: Icon(Icons.home),
             ),
-            SizedBox(width: 20),
             IconButton(
               onPressed: () {
                 updateView(1, null);
               },
               icon: Icon(Icons.list),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                TransactionPage(transactionWithCategory: null),
+                      ),
+                    )
+                    .then((value) {
+                      setState(() {});
+                    });
+              },
+              icon: Icon(Icons.add_circle, size: 30, color: Colors.green),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SholatPage()),
+                );
+              },
+              icon: Icon(Icons.mosque, color: Colors.green),
             ),
           ],
         ),

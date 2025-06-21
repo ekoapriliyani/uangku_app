@@ -40,6 +40,7 @@ dependencies:
   drift: ^2.26.1
   drift_flutter: ^0.2.4
   path_provider: ^2.1.5
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:
